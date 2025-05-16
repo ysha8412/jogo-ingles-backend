@@ -1,7 +1,7 @@
-import express from 'express';
-import dotenv from 'dotenv';
-import cors from 'cors';
-import axios from 'axios';
+const express = require('express');
+const dotenv = require('dotenv');
+const cors = require('cors');
+const axios = require('axios');
 
 dotenv.config();
 console.log('✅ API KEY carregada:', process.env.OPENAI_API_KEY);
@@ -99,5 +99,5 @@ Output must be only the list of 20 nouns, comma-separated, with no explanations 
 });
 
 app.listen(PORT, () => {
-  console.log(`🚀 Server is running on http://192.168.0.50:${PORT}`);
+  console.log(`🚀 Server is running on http://0.0.0.0:${PORT}`);
 });
