@@ -4,7 +4,11 @@ const cors = require('cors');
 const axios = require('axios');
 
 dotenv.config();
-console.log('✅ API KEY carregada:', process.env.OPENAI_API_KEY);
+if (!process.env.OPENAI_API_KEY) {
+  console.log('❌ A chave da OpenAI NÃO foi carregada!');
+} else {
+  console.log('✅ API KEY carregada com sucesso!');
+}
 
 const app = express();
 const PORT = process.env.PORT || 4000;
