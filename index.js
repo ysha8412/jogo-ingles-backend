@@ -18,8 +18,7 @@ app.use(express.json());
 
 let usedWords = [];
 const bannedWords = [
-  "car", "book", "dog", "apple", "ball", "pen", "banana",
-  "chair", "phone", "tree", "clock", "shoe", "sun"
+  "car", "book", "dog", "apple"
 ];
 
 // Rota para resetar palavras usadas (opcional)
@@ -39,13 +38,59 @@ app.post('/get-words', async (req, res) => {
 
   const prompt = `
 Generate exactly 20 unique English nouns appropriate for ${level} level learners.
-Avoid simple or overused words (like: car, book, dog, apple, etc).
-Avoid any of the following words: [${[...usedWords, ...bannedWords].map(w => `"${w}"`).join(', ')}]
-Choose nouns from a diverse range of categories, such as:
-- Household items, animals, weather, landscapes, food, professions, body parts, emotions, etc.
-Do not repeat words.
+
+- Avoid repeating nouns used in previous lists.
+- Do not include overused or overly obvious words (like "car", "book", "dog" for Beginner).
+- Do not include any of the following words: [${[...usedWords, ...bannedWords].map(w => `"${w}"`).join(", ")}]
+
+- Ensure all nouns are appropriate to the chosen difficulty level:
+  - Beginner = common, concrete nouns, used daily.
+  - Intermediate = slightly less common nouns that may be specific but still familiar to intermediate learners.
+  - Advanced = less commonly used nouns.
+
+- Select nouns from a variety of the following categories:
+
+  🏠 Daily Life
+  - Household items, Rooms in the house, Furniture, Kitchen utensils, Electronic devices, Hygiene products,
+  - Food, Drinks, Meals, Means of transport, Shopping / supermarket, Clothing items, Types of footwear, Accessories
+
+  🧍 Human Being
+  - Body parts, Feelings and emotions, Skills and abilities, Professions, Family relationships, Stages of life
+
+  🌳 Environment and Nature
+  - Domestic animals, Wild animals, Aquatic animals, Animals in general, Plants and flowers, Trees,
+  - Weather phenomena, Landscape elements (mountains, rivers, etc.), Seasons of the year
+
+  🏫 Education and Work
+  - School supplies, School subjects, University majors, Professions, Work tools, Workplaces,
+  - Office equipment, Technology / IT, Objects at school, Office items
+
+  🏙️ Cities and Locations
+  - Types of buildings, Public places, Institutions and social structures, Commercial establishments,
+  - Tourist attractions, Public transport, Events
+
+  🎉 Leisure
+  - Sports, Musical instruments, Hobbies
+
+  ✈️ Transport and Travel
+  - Land transport, Air transport, Water transport, Travel-related items, Types of accommodation
+
+  🧠 Abstract Concepts
+  - Human qualities (e.g., honesty, courage), Social concepts (e.g., justice, freedom), Academic terms,
+  - Values and virtues, Mental states
+
+  ⏳ Time
+  - Days of the week, Months, Seasons, Units of time (hour, minute, year)
+
+  ⚖️ Government and Systems
+  - Public institutions, Political systems, Economic concepts, Government professions
+
+- Do not repeat any noun that has already been used by other teams.
+- Do not repeat categories within the same list.
+
 Output must be only the list of 20 nouns, comma-separated, with no explanations or numbering.
 `;
+
 
   try {
     const response = await axios.post(
