@@ -91,13 +91,12 @@ Output must be only the list of 20 nouns, comma-separated, with no explanations 
 
     res.json({ words: newWords });
   } catch (error) {
-    console.error('❌ ERRO AO CHAMAR A OPENAI:');
-    if (error.response) {
-      console.error('Status:', error.response.status);
-      console.error('Data:', error.response.data);
-    } else {
-      console.error('Mensagem:', error.message);
-    }
+   if (error.response) {
+  console.error('📛 Status:', error.response.status);
+  console.error('📩 Data:', JSON.stringify(error.response.data));
+} else {
+  console.error('🧨 Erro genérico:', error.message);
+}
     res.status(500).json({ error: 'Failed to generate words' });
   }
 });
