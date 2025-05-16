@@ -49,16 +49,11 @@ Output must be only the list of 20 nouns, comma-separated, with no explanations 
 
   try {
     const response = await axios.post(
-      'https://api.openai.com/v1/completions',
+      'https://api.openai.com/v1/chat/completions',
       {
-        model: 'text-davinci-003',
-        prompt: prompt,
-        max_tokens: 200,
+        model: 'gpt-4-turbo',
+        messages: [{ role: 'user', content: prompt }],
         temperature: 1,
-        top_p: 1,
-        frequency_penalty: 0.8,
-        presence_penalty: 0.5,
-        stop: ["\n"],
       },
       {
         headers: {
@@ -68,7 +63,7 @@ Output must be only the list of 20 nouns, comma-separated, with no explanations 
       }
     );
 
-    const rawText = response.data.choices[0].text;
+    const rawText = response.data.choices[0].message.content;
     console.log('🧠 Resposta bruta da OpenAI:\n', rawText);
 
     const newWords = rawText
@@ -91,12 +86,12 @@ Output must be only the list of 20 nouns, comma-separated, with no explanations 
 
     res.json({ words: newWords });
   } catch (error) {
-   if (error.response) {
-  console.error('📛 Status:', error.response.status);
-  console.error('📩 Data:', JSON.stringify(error.response.data));
-} else {
-  console.error('🧨 Erro genérico:', error.message);
-}
+    if (error.response) {
+      console.error('📛 Status:', error.response.status);
+      console.error('📩 Data:', JSON.stringify(error.response.data));
+    } else {
+      console.error('🧨 Erro genérico:', error.message);
+    }
     res.status(500).json({ error: 'Failed to generate words' });
   }
 });
